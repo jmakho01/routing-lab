@@ -31,8 +31,20 @@ export const campusById = (req, res) => {
 
 export const search = (req, res) => {
     const { city, open, program } = req.query;
+    let reOpen;
 
-    const results = campuses.filter(el => el.programs.includes(program));
+    let results = campuses;
+    if (city) {
+        results = results.filter(el => el.city === city);
+    }
+    if (open) {
+        if (open === "true") { reOpen = true; } 
+        else if (open === "false") { reOpen = false; }
+        results = results.filter(el => el.open === reOpen);
+    }
+    if (program) {
+        results = results.filter(el => el.programs.includes(program));
+    }
 
     res.status(200).json(results);
 }
